@@ -84,3 +84,10 @@ Here are some command to start the container with podman:
 - Stop the emulator: `podman stop spanner-emul`
 - Restart the emulator: `podman start spanner-emul`
 
+
+
+### TODO 
+
+- [ ] Check migrations tables exist in default command.
+- [ ] Support also inserts and updates in migrations (use `ddl` and `dml` sufffix to separate them).
+- [ ] Implement lock migration table during migrations
