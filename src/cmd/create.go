@@ -16,6 +16,17 @@ const (
 	DML MigrationType = "DML"
 )
 
+func (e MigrationType) String() string {
+	switch e {
+	case DDL:
+		return "DDL"
+	case DML:
+		return "DML"
+	default:
+		return "UNKNOWN"
+	}
+}
+
 var createDDLCmd = &cobra.Command{
 	Use:   "create-ddl [migration-name]",
 	Short: "Create migration files for DDL modification",
@@ -38,7 +49,7 @@ func createMigrationFiles(fileName string, migrationType MigrationType) {
 	// Get current time
 	currentTime := time.Now()
 
-	migrationName := currentTime.Format("20060102150405123") + "_DML_" + fileName
+	migrationName := currentTime.Format("20060102150405123") + "_" + migrationType.String() + "_" + fileName
 
 	// Create a folder with the timestamp as its name
 	folderName := config.MigrationFilesPath + "/" + migrationName
