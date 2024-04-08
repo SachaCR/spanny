@@ -17,9 +17,14 @@ By default `$ spanny` will display the current migration status. It shows the mi
 
 ![default command display](images/default-cmd.png)
 
-## Create a migration 
+## Create a DDL migration 
 
-to create a new migration file just type `$ spanny create my_migration`. This will generate a folder (20240408171209485_DML_my_migration) in the path you've declared in the `.spannyrc` file (migrationFilesPath). This folder will contain a `up.sql` and a `down.sql` file to respectively implement your up and down DDL queries. You'll need to separate each request with a `;`.
+To create a new migration file just type `$ spanny create-ddl my_migration`. This will generate a folder (20240408171209485_DML_my_migration) in the path you've declared in the `.spannyrc` file (migrationFilesPath). This folder will contain a `up.sql` and a `down.sql` file to respectively implement your up and down DDL queries. You'll need to separate each request with a `;`.
+
+## Create a DML migration
+
+It's the same principle as to create a DDL migration. Just type: `$ spanny create-dml my_migration`.
+
 
 You can see examples in the [migrations folder](https://github.com/SachaCR/spanny/tree/main/migrations) of this repository.
 
