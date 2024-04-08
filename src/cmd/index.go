@@ -22,7 +22,8 @@ func init() {
 
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(configCmd)
-	rootCmd.AddCommand(createCmd)
+	rootCmd.AddCommand(createDDLCmd)
+	rootCmd.AddCommand(createDMLCmd)
 	rootCmd.AddCommand(stateCmd)
 	rootCmd.AddCommand(initCmd)
 	rootCmd.AddCommand(listCmd)

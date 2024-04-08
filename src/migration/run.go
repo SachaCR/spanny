@@ -41,9 +41,18 @@ func RunMigration(params ApplyMigrationParams) error {
 
 	migrationStatements := strings.Split(fileContent, ";")
 
-	err = dbops.UpdateDDL(databasePath, migrationStatements[0:len(migrationStatements)-1])
-	if err != nil {
-		return err
+	if strings.Contains(migrationName, "_DML_") {
+		_, err = dbops.UpdateDML(databasePath, migrationStatements[0:len(migrationStatements)-1])
+		if err != nil {
+			return err
+		}
+	}
+
+	if strings.Contains(migrationName, "_DDL_") {
+		err = dbops.UpdateDDL(databasePath, migrationStatements[0:len(migrationStatements)-1])
+		if err != nil {
+			return err
+		}
 	}
 
 	if direction == Down {

@@ -9,20 +9,36 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var createCmd = &cobra.Command{
-	Use:   "create [migration-name]",
-	Short: "Create migration files",
+type MigrationType string
+
+const (
+	DDL MigrationType = "DDL"
+	DML MigrationType = "DML"
+)
+
+var createDDLCmd = &cobra.Command{
+	Use:   "create-ddl [migration-name]",
+	Short: "Create migration files for DDL modification",
 	Run: func(cmd *cobra.Command, args []string) {
 		fileName := args[0]
-		createMigrationFiles(fileName)
+		createMigrationFiles(fileName, DDL)
 	},
 }
 
-func createMigrationFiles(fileName string) {
+var createDMLCmd = &cobra.Command{
+	Use:   "create-dml [migration-name]",
+	Short: "Create migration files for DML modification",
+	Run: func(cmd *cobra.Command, args []string) {
+		fileName := args[0]
+		createMigrationFiles(fileName, DML)
+	},
+}
+
+func createMigrationFiles(fileName string, migrationType MigrationType) {
 	// Get current time
 	currentTime := time.Now()
 
-	migrationName := currentTime.Format("20060102150405123") + "_" + fileName
+	migrationName := currentTime.Format("20060102150405123") + "_DML_" + fileName
 
 	// Create a folder with the timestamp as its name
 	folderName := config.MigrationFilesPath + "/" + migrationName

@@ -19,7 +19,7 @@ By default `$ spanny` will display the current migration status. It shows the mi
 
 ## Create a migration 
 
-to create a new migration file just type `$ spanny create my_migration`. This will generate a folder (20240408171209485_my_migration) in the path you've declared in the `.spannyrc` file (migrationFilesPath). This folder will contain a `up.sql` and a `down.sql` file to respectively implement your up and down DDL queries. You'll need to separate each request with a `;`.
+to create a new migration file just type `$ spanny create my_migration`. This will generate a folder (20240408171209485_DML_my_migration) in the path you've declared in the `.spannyrc` file (migrationFilesPath). This folder will contain a `up.sql` and a `down.sql` file to respectively implement your up and down DDL queries. You'll need to separate each request with a `;`.
 
 You can see examples in the [migrations folder](https://github.com/SachaCR/spanny/tree/main/migrations) of this repository.
 
@@ -39,8 +39,9 @@ Available Commands:
   apply           Apply the next migration
   completion      Generate the autocompletion script for the specified shell
   config          Print Spanny current configuration
-  create          Create migration files
   create-db       Create a Spanner database with the given name or default to the config file value
+  create-ddl      Create migration files for DDL modification
+  create-dml      Create migration files for DML modification
   create-instance Create a Spanner instance with the given name or default to the config file value
   help            Help about any command
   init            Will create the instance, database and utility migration tables
@@ -84,10 +85,8 @@ Here are some command to start the container with podman:
 - Stop the emulator: `podman stop spanner-emul`
 - Restart the emulator: `podman start spanner-emul`
 
-
-
 ### TODO 
 
 - [ ] Check migrations tables exist in default command.
-- [ ] Support also inserts and updates in migrations (use `ddl` and `dml` sufffix to separate them).
-- [ ] Implement lock migration table during migrations
+- [x] Support also inserts and updates in migrations (use `ddl` and `dml` sufffix to separate them).
+- [ ] Implement lock migration table during migrations.
