@@ -10,10 +10,55 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+func HasDatabase(instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
+	databasePath := fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectId, instanceId, databaseId)
+
+	ctx := context.Background()
+	databaseAdminClient, err := database.NewDatabaseAdminClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	defer databaseAdminClient.Close()
+
+	databaseIterator := databaseAdminClient.ListDatabases(ctx, &databasepb.ListDatabasesRequest{
+		Parent: fmt.Sprintf("projects/%s/instances/%s", projectId, instanceId),
+	})
+
+	var database *databasepb.Database
+
+	for {
+		db, err := databaseIterator.Next()
+
+		if err != nil {
+			if err == iterator.Done {
+				break
+			}
+
+			return nil, err
+		}
+
+		if db.GetName() == databasePath {
+			database = db
+		}
+	}
+
+	return database, nil
+}
+
 func CreateDatabase(instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
 	ctx := context.Background()
 
 	databasePath := fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectId, instanceId, databaseId)
+
+	existingDatabase, err := HasDatabase(instanceId, projectId, databaseId)
+	if err != nil {
+		return nil, err
+	}
+
+	if existingDatabase != nil {
+		return existingDatabase, nil
+	}
 
 	matches := regexp.MustCompile("^(.*)/databases/(.*)$").FindStringSubmatch(databasePath)
 	if matches == nil || len(matches) != 3 {
@@ -30,34 +75,6 @@ func CreateDatabase(instanceId string, projectId string, databaseId string) (*da
 	}
 
 	defer databaseAdminClient.Close()
-
-	databaseIterator := databaseAdminClient.ListDatabases(ctx, &databasepb.ListDatabasesRequest{
-		Parent: fmt.Sprintf("projects/%s/instances/%s", projectId, instanceId),
-	})
-
-	hasDatabase := false
-	var database *databasepb.Database
-
-	for {
-		db, err := databaseIterator.Next()
-
-		if err != nil {
-			if err == iterator.Done {
-				break
-			}
-
-			return nil, err
-		}
-
-		if db.GetName() == databasePath {
-			hasDatabase = true
-			database = db
-		}
-	}
-
-	if hasDatabase {
-		return database, nil
-	}
 
 	op, err := databaseAdminClient.CreateDatabase(ctx, &databasepb.CreateDatabaseRequest{
 		Parent:          instancePath,

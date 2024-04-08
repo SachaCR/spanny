@@ -6,6 +6,7 @@ import (
 	"os"
 
 	conf "spanny/src/config"
+	"spanny/src/dbops"
 	"spanny/src/ui"
 
 	"cloud.google.com/go/spanner"
@@ -65,8 +66,29 @@ var rootCmd = &cobra.Command{
 
 		databasePath := getDatabasePath()
 
-		client, err := spanner.NewClient(ctx, databasePath)
+		instance, err := dbops.HasInstance(config.ProjectId, config.InstanceId)
+		if err != nil {
+			println(err.Error())
+			return
+		}
 
+		if instance == nil {
+			println("Spanner instance not found")
+			return
+		}
+
+		database, err := dbops.HasDatabase(config.InstanceId, config.ProjectId, config.DatabaseId)
+		if err != nil {
+			println(err.Error())
+			return
+		}
+
+		if database == nil {
+			println("Spanner database not found")
+			return
+		}
+
+		client, err := spanner.NewClient(ctx, databasePath)
 		if err != nil {
 			println(err.Error())
 			return

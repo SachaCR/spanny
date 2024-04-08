@@ -13,8 +13,6 @@ var createInstanceCmd = &cobra.Command{
 	Use:   "create-instance <instance name>",
 	Short: "Create a Spanner instance with the given name or default to the config file value",
 	Run: func(cmd *cobra.Command, args []string) {
-		println(len(args))
-
 		projectId := config.ProjectId
 		instanceId := config.InstanceId
 

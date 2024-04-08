@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func CreateInstance(projectId string, instanceId string) (*instancepb.Instance, error) {
+func HasInstance(projectId string, instanceId string) (*instancepb.Instance, error) {
 	ctx := context.Background()
 
 	instanceAdmin, err := instance.NewInstanceAdminClient(ctx)
@@ -24,7 +24,6 @@ func CreateInstance(projectId string, instanceId string) (*instancepb.Instance, 
 		Parent: fmt.Sprintf("projects/%s", projectId),
 	})
 
-	hasInstance := false
 	var instance *instancepb.Instance
 
 	for {
@@ -39,13 +38,28 @@ func CreateInstance(projectId string, instanceId string) (*instancepb.Instance, 
 		}
 
 		if inst.DisplayName == instanceId {
-			hasInstance = true
 			instance = inst
 		}
 	}
 
-	if hasInstance {
-		return instance, nil
+	return instance, nil
+}
+
+func CreateInstance(projectId string, instanceId string) (*instancepb.Instance, error) {
+
+	existingInstance, err := HasInstance(projectId, instanceId)
+	if err != nil {
+		return nil, err
+	}
+
+	if existingInstance != nil {
+		return existingInstance, nil
+	}
+
+	ctx := context.Background()
+	instanceAdmin, err := instance.NewInstanceAdminClient(ctx)
+	if err != nil {
+		return nil, err
 	}
 
 	op, err := instanceAdmin.CreateInstance(ctx, &instancepb.CreateInstanceRequest{
