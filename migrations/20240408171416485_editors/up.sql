@@ -1,0 +1,6 @@
+CREATE TABLE
+    editors (
+        id STRING (36) NOT NULL DEFAULT (GENERATE_UUID ()),
+        fullname STRING (MAX) NOT NULL,
+        createdAt TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP())
+    ) PRIMARY KEY (id);

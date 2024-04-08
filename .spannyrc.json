@@ -1,0 +1,29 @@
+{
+    "migrationFilesPath": "./migrations",
+    "servicePath": "localhost",
+    "port": 9010,
+    "envs": {
+        "staging": {
+            "project": "staging-platform",
+            "instance": "staging-instance",
+            "database": "staging-database"
+        },
+        "production": {
+            "project": "production-platform",
+            "instance": "production-instance",
+            "database": "production-database"
+        },
+        "default": {
+            "project": "local-platform",
+            "instance": "local-instance",
+            "database": "local-database",
+            "use-emulator": true
+        },
+        "test": {
+            "project": "test-platform",
+            "instance": "test-instance",
+            "database": "test-database",
+            "use-emulator": true
+        }
+    }
+}
