@@ -1,4 +1,4 @@
-module spanny
+module github.com/SachaCR/spanny
 
 go 1.22.1
 

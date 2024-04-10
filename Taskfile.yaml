@@ -1,0 +1,32 @@
+version: "3"
+
+tasks:
+    run:
+        desc: Run the service
+        cmds:
+        - go run ./cmd/spanny
+
+    build:
+        desc: Build the service
+        cmds:
+        - go build ./cmd/spanny
+
+    install:
+        desc: Install Spanny in your $GOPATH/bin
+        cmds:
+        - go install ./cmd/spanny
+
+    gotest:
+        desc: Test the service with default test runner
+        cmds:
+        - GO_ENV=test go test -v ./...
+
+    test:
+        desc: Test the service with gotestsum
+        cmds:
+        - GO_ENV=test gotestsum --format pkgname
+    
+    coverage:
+        desc: Evaluate test coverage
+        cmds:
+        - GO_ENV=test go test -v -coverprofile coverage.out ./... && go tool cover -html=coverage.out

@@ -1,6 +1,6 @@
 # Spanny
 
-Spanny is a CLI that helps you manage schema mirations with a Spanner Database. It was created to help working locally with the Google Spanner Emulator.
+Spanny is a CLI that helps you manage schema migrations with a Spanner Database. It was created to help working locally with the Google Spanner Emulator.
 
 Disclaimer: It's my first project in golang
 
@@ -72,10 +72,42 @@ Use "spanny [command] --help" for more information about a command.
 
 ## Configuration file
 
-Spanny will by default search for a `.spannyrc` file in the current directory. You can specify a path to your config file with the flag `--config` or `-c`.
+Spanny will by default search for a `.spannyrc.json` file in the current directory. You can specify a path to your config file with the flag `--config` or `-c`.
 
 - `$ spanny -c "./path/to/my/config"`
 
+Configuration Example:
+```json
+{
+    "migrationFilesPath": "./migrations",
+    "servicePath": "localhost",
+    "port": 9010,
+    "envs": {
+        "staging": {
+            "project": "staging-platform",
+            "instance": "staging-instance",
+            "database": "staging-database"
+        },
+        "production": {
+            "project": "production-platform",
+            "instance": "production-instance",
+            "database": "production-database"
+        },
+        "default": {
+            "project": "local-platform",
+            "instance": "local-instance",
+            "database": "local-database",
+            "use-emulator": true
+        },
+        "test": {
+            "project": "test-platform",
+            "instance": "test-instance",
+            "database": "test-database",
+            "use-emulator": true
+        }
+    }
+}
+```
 
 ## Run the Spanner Emulator
 
