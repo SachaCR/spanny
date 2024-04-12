@@ -50,6 +50,7 @@ func LoadConfiguration(env string, configPath string) (SpannyConfig, error) {
 
 	if len(envConfig) == 0 {
 		fmt.Printf("ENV NOT FOUND ( %s ): Default values loaded\n", env)
+		env = "default"
 		envConfig = viper.GetStringMapString("envs.default")
 	}
 

@@ -24,7 +24,7 @@ tasks:
     test:
         desc: Test the service with gotestsum
         cmds:
-        - GO_ENV=test gotestsum --format pkgname
+        - GO_ENV=test gotestsum --format dots
     
     coverage:
         desc: Evaluate test coverage
