@@ -6,9 +6,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func InsertInitialLockRow(databasePath string) error {
-	ctx := context.Background()
-
+func InsertInitialLockRow(ctx context.Context, databasePath string) error {
 	client, err := spanner.NewClient(ctx, databasePath)
 
 	if err != nil {

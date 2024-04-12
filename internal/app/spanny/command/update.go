@@ -18,7 +18,7 @@ var updateCmd = &cobra.Command{
 
 		databasePath := getDatabasePath()
 
-		rowCount, err := dbops.ExecuteUpdateQuery(databasePath, updateQuery)
+		rowCount, err := dbops.ExecuteUpdateQuery(cmd.Context(), databasePath, updateQuery)
 
 		if err != nil {
 			println(err.Error())

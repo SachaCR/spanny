@@ -127,3 +127,7 @@ Here are some command to start the container with podman:
 - [ ] Check migrations tables exist in default command.
 - [x] Support also inserts and updates in migrations (use `ddl` and `dml` sufffix to separate them).
 - [ ] Implement lock migration table during migrations.
+- [x] Pass command context instead of creating a new one.
+- [ ] Move init into main.go if possible
+- [ ] Add unit tests for decoupled code
+- [ ] Add integration tests with Spanner emulator for code using spanner

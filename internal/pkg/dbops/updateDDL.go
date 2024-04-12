@@ -7,9 +7,7 @@ import (
 	"cloud.google.com/go/spanner/admin/database/apiv1/databasepb"
 )
 
-func UpdateDDL(databasePath string, statements []string) error {
-	ctx := context.Background()
-
+func UpdateDDL(ctx context.Context, databasePath string, statements []string) error {
 	adminClient, err := database.NewDatabaseAdminClient(ctx)
 	if err != nil {
 		return err

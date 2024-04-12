@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-type Config struct {
+type SpannyConfig struct {
 	MigrationFilesPath   string
 	ServicePath          string
 	Port                 int
@@ -18,7 +18,7 @@ type Config struct {
 	UsingSpannerEmulator bool
 }
 
-func LoadConfiguration(env string, configPath string) (Config, error) {
+func LoadConfiguration(env string, configPath string) (SpannyConfig, error) {
 
 	viper.AddConfigPath(configPath)
 	viper.SetConfigName(".spannyrc.json")
@@ -59,7 +59,7 @@ func LoadConfiguration(env string, configPath string) (Config, error) {
 		usingSpannerEmulator = false
 	}
 
-	return Config{
+	return SpannyConfig{
 		MigrationFilesPath:   viper.GetString("migrationFilesPath"),
 		ServicePath:          viper.GetString("servicePath"),
 		Port:                 viper.GetInt("port"),

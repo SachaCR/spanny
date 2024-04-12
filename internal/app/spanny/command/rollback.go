@@ -14,7 +14,8 @@ var rollbackCmd = &cobra.Command{
 	Short: "Rollback last migration",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		lastMigrationApplied, err := migration.GetLastMigrationApplied(getDatabasePath())
+		ctx := cmd.Context()
+		lastMigrationApplied, err := migration.GetLastMigrationApplied(ctx, getDatabasePath())
 
 		if err != nil {
 			fmt.Printf("Error getting last migration applied: %s\n", err)
@@ -38,7 +39,7 @@ var rollbackCmd = &cobra.Command{
 
 		print("Rollback migration ⏪: ", migrationNameToRollback)
 
-		err = migration.RunMigration(migration.ApplyMigrationParams{
+		err = migration.RunMigration(ctx, migration.ApplyMigrationParams{
 			Direction:          migration.Down,
 			DatabasePath:       getDatabasePath(),
 			MigrationName:      migrationNameToRollback,

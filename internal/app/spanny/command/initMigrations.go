@@ -16,16 +16,18 @@ var initMigrationCmd = &cobra.Command{
 		instanceId := config.InstanceId
 		databaseId := config.DatabaseId
 
+		ctx := cmd.Context()
+
 		databasePath := fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectId, instanceId, databaseId)
 
-		err := migration.CreateMigrationTables(databasePath)
+		err := migration.CreateMigrationTables(ctx, databasePath)
 
 		if err != nil {
 			fmt.Printf("Error creating migration tables: %s\n", err)
 			return
 		}
 
-		err = migration.InsertInitialLockRow(databasePath)
+		err = migration.InsertInitialLockRow(ctx, databasePath)
 		if err != nil {
 			fmt.Printf("Error configuring migration lock: %s\n", err)
 			return

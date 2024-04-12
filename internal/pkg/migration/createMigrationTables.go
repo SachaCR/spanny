@@ -1,8 +1,12 @@
 package migration
 
-import "github.com/SachaCR/spanny/internal/pkg/dbops"
+import (
+	"context"
 
-func CreateMigrationTables(databasePath string) error {
+	"github.com/SachaCR/spanny/internal/pkg/dbops"
+)
+
+func CreateMigrationTables(ctx context.Context, databasePath string) error {
 	statements := []string{
 		`CREATE TABLE IF NOT EXISTS spanner_migrations (
 			name            STRING(MAX) NOT NULL,
@@ -15,5 +19,5 @@ func CreateMigrationTables(databasePath string) error {
 		) PRIMARY KEY (id)`,
 	}
 
-	return dbops.UpdateDDL(databasePath, statements)
+	return dbops.UpdateDDL(ctx, databasePath, statements)
 }
