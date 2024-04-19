@@ -1,10 +1,14 @@
 package migration
 
-import "github.com/SachaCR/spanny/internal/pkg/dbops"
+import (
+	"context"
 
-func GetLastMigrationApplied(databasePath string) (string, error) {
+	"github.com/SachaCR/spanny/internal/pkg/dbops"
+)
 
-	_, rows, err := dbops.ExecuteReadQuery(databasePath, `
+func GetLastMigrationApplied(ctx context.Context, databasePath string) (string, error) {
+
+	_, rows, err := dbops.ExecuteReadQuery(ctx, databasePath, `
 	SELECT * 
 	FROM spanner_migrations 
 	ORDER BY applied_at 

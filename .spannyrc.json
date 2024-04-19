@@ -4,23 +4,23 @@
     "port": 9010,
     "envs": {
         "staging": {
-            "project": "staging-platform",
+            "project": "staging-project",
             "instance": "staging-instance",
             "database": "staging-database"
         },
         "production": {
-            "project": "production-platform",
+            "project": "production-project",
             "instance": "production-instance",
             "database": "production-database"
         },
         "default": {
-            "project": "local-platform",
+            "project": "local-project",
             "instance": "local-instance",
             "database": "local-database",
             "use-emulator": true
         },
         "test": {
-            "project": "test-platform",
+            "project": "test-project",
             "instance": "test-instance",
             "database": "test-database",
             "use-emulator": true

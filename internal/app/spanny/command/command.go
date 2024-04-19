@@ -1,7 +1,6 @@
 package command
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -14,7 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var config *conf.Config
+var config *conf.SpannyConfig
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&env, "env", "e", "default", "Specify spanner environment")
@@ -64,11 +63,11 @@ var rootCmd = &cobra.Command{
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		ctx := context.Background()
+		ctx := cmd.Context()
 
 		databasePath := getDatabasePath()
 
-		instance, err := dbops.HasInstance(config.ProjectId, config.InstanceId)
+		instance, err := dbops.HasInstance(ctx, config.ProjectId, config.InstanceId)
 		if err != nil {
 			println(err.Error())
 			return
@@ -79,7 +78,7 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
-		database, err := dbops.HasDatabase(config.InstanceId, config.ProjectId, config.DatabaseId)
+		database, err := dbops.HasDatabase(ctx, config.InstanceId, config.ProjectId, config.DatabaseId)
 		if err != nil {
 			println(err.Error())
 			return

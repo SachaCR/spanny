@@ -14,8 +14,9 @@ var applyCmd = &cobra.Command{
 	Use:   "apply",
 	Short: "Apply the next migration",
 	Run: func(cmd *cobra.Command, args []string) {
+		ctx := cmd.Context()
 
-		lastMigrationApplied, err := migration.GetLastMigrationApplied(getDatabasePath())
+		lastMigrationApplied, err := migration.GetLastMigrationApplied(ctx, getDatabasePath())
 
 		if err != nil {
 			fmt.Printf("Error getting last migration applied: %s\n", err)
@@ -46,7 +47,7 @@ var applyCmd = &cobra.Command{
 
 		print("Applying migration ⏩: ", migrationNameToApply)
 
-		err = migration.RunMigration(migration.ApplyMigrationParams{
+		err = migration.RunMigration(ctx, migration.ApplyMigrationParams{
 			Direction:          migration.Up,
 			DatabasePath:       getDatabasePath(),
 			MigrationName:      migrationNameToApply,

@@ -21,7 +21,7 @@ var createInstanceCmd = &cobra.Command{
 			instanceId = args[0]
 		}
 
-		instance, err := dbops.CreateInstance(projectId, instanceId)
+		instance, err := dbops.CreateInstance(cmd.Context(), projectId, instanceId)
 
 		if err != nil {
 			println(err.Error())

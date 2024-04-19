@@ -6,8 +6,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func ExecuteReadQuery(databasePath string, query string) (columns []string, rows [][]string, err error) {
-	ctx := context.Background()
+func ExecuteReadQuery(ctx context.Context, databasePath string, query string) (columns []string, rows [][]string, err error) {
 
 	client, err := spanner.NewClient(ctx, databasePath)
 	if err != nil {

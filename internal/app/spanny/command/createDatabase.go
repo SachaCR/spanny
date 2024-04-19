@@ -21,7 +21,7 @@ var createDatabaseCmd = &cobra.Command{
 			databaseId = args[0]
 		}
 
-		_, err := dbops.CreateDatabase(instanceId, projectId, databaseId)
+		_, err := dbops.CreateDatabase(cmd.Context(), instanceId, projectId, databaseId)
 
 		if err != nil {
 			println(err.Error())
