@@ -39,13 +39,18 @@ func RenderTableFromRowIterator(iter *spanner.RowIterator) {
 		for index := range columns {
 			value := row.ColumnValue(index)
 
-			_, isBool := value.GetKind().(*structpb.Value_BoolValue)
-			if isBool {
-				values = append(values, strconv.FormatBool(value.GetBoolValue()))
-				continue
-			}
-			values = append(values, value.GetStringValue())
+			kind := value.GetKind()
 
+			switch v := kind.(type) {
+			case *structpb.Value_StringValue:
+				values = append(values, v.StringValue)
+
+			case *structpb.Value_BoolValue:
+				values = append(values, strconv.FormatBool(v.BoolValue))
+
+			case *structpb.Value_NumberValue:
+				values = append(values, strconv.FormatFloat(v.NumberValue, 'f', -1, 64))
+			}
 		}
 
 		tableRows = append(tableRows, values)

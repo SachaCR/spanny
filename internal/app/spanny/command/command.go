@@ -19,7 +19,6 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&env, "env", "e", "default", "Specify spanner environment")
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "./", "Indicate the configuration path")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Makes spanny more verbose")
-
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(createDDLCmd)
@@ -43,7 +42,7 @@ func init() {
 var rootCmd = &cobra.Command{
 	Use:   "spanny",
 	Short: "Spanny database schema migration CLI tool for Spanner",
-	Long:  `Spanny is a very CLI tool helping you to manage database schema migration with the Spanner emulator`,
+	Long:  `Spanny is a CLI tool helping you to manage database schema migration with the Spanner emulator`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		loadedConfig, err := conf.LoadConfiguration(env, configPath)
 
