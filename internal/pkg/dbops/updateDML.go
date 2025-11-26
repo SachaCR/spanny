@@ -6,9 +6,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func UpdateDML(databasePath string, statements []string) (rowCounts []int64, err error) {
-	ctx := context.Background()
-
+func UpdateDML(ctx context.Context, databasePath string, statements []string) (rowCounts []int64, err error) {
 	client, err := spanner.NewClient(ctx, databasePath)
 	if err != nil {
 		return []int64{0}, err

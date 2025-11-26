@@ -12,7 +12,7 @@ var listTablesCmd = &cobra.Command{
 	Short: "List tables files",
 	Run: func(cmd *cobra.Command, args []string) {
 		databasePath := getDatabasePath()
-		columns, rows, err := dbops.ExecuteReadQuery(databasePath, `SELECT table_name from information_schema.tables WHERE table_type = "BASE TABLE"`)
+		columns, rows, err := dbops.ExecuteReadQuery(cmd.Context(), databasePath, `SELECT table_name from information_schema.tables WHERE table_type = "BASE TABLE"`)
 
 		if err != nil {
 			println(err.Error())

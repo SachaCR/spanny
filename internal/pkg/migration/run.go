@@ -1,6 +1,7 @@
 package migration
 
 import (
+	"context"
 	"os"
 	"strings"
 
@@ -21,7 +22,7 @@ type ApplyMigrationParams struct {
 	MigrationFilesPath string
 }
 
-func RunMigration(params ApplyMigrationParams) error {
+func RunMigration(ctx context.Context, params ApplyMigrationParams) error {
 	databasePath := params.DatabasePath
 	migrationName := params.MigrationName
 	migrationFilesPath := params.MigrationFilesPath
@@ -43,21 +44,21 @@ func RunMigration(params ApplyMigrationParams) error {
 	migrationStatements := strings.Split(fileContent, ";")
 
 	if strings.Contains(migrationName, "_DML_") {
-		_, err = dbops.UpdateDML(databasePath, migrationStatements[0:len(migrationStatements)-1])
+		_, err = dbops.UpdateDML(ctx, databasePath, migrationStatements[0:len(migrationStatements)-1])
 		if err != nil {
 			return err
 		}
 	}
 
 	if strings.Contains(migrationName, "_DDL_") {
-		err = dbops.UpdateDDL(databasePath, migrationStatements[0:len(migrationStatements)-1])
+		err = dbops.UpdateDDL(ctx, databasePath, migrationStatements[0:len(migrationStatements)-1])
 		if err != nil {
 			return err
 		}
 	}
 
 	if direction == Down {
-		err = DeleteRollbackedMigration(databasePath, migrationName)
+		err = DeleteRollbackedMigration(ctx, databasePath, migrationName)
 		if err != nil {
 			return err
 		}
@@ -65,7 +66,7 @@ func RunMigration(params ApplyMigrationParams) error {
 		return nil
 	}
 
-	err = InsertAppliedMigration(databasePath, migrationName)
+	err = InsertAppliedMigration(ctx, databasePath, migrationName)
 	if err != nil {
 		return err
 	}

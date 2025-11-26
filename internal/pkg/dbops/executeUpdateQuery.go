@@ -6,8 +6,7 @@ import (
 	"cloud.google.com/go/spanner"
 )
 
-func ExecuteUpdateQuery(databasePath string, updateQuery string) (rowCount int64, err error) {
-	ctx := context.Background()
+func ExecuteUpdateQuery(ctx context.Context, databasePath string, updateQuery string) (rowCount int64, err error) {
 
 	client, err := spanner.NewClient(ctx, databasePath)
 	if err != nil {

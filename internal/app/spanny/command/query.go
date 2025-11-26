@@ -19,7 +19,7 @@ var queryCmd = &cobra.Command{
 
 		databasePath := getDatabasePath()
 
-		columns, rows, err := dbops.ExecuteReadQuery(databasePath, query)
+		columns, rows, err := dbops.ExecuteReadQuery(cmd.Context(), databasePath, query)
 		if err != nil {
 			println(err.Error())
 			return

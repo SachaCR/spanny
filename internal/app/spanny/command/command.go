@@ -1,7 +1,6 @@
 package command
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -14,13 +13,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var config *conf.Config
+var config *conf.SpannyConfig
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&env, "env", "e", "default", "Specify spanner environment")
 	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "./", "Indicate the configuration path")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Makes spanny more verbose")
-
 	rootCmd.AddCommand(versionCmd)
 	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(createDDLCmd)
@@ -44,7 +42,7 @@ func init() {
 var rootCmd = &cobra.Command{
 	Use:   "spanny",
 	Short: "Spanny database schema migration CLI tool for Spanner",
-	Long:  `Spanny is a very CLI tool helping you to manage database schema migration with the Spanner emulator`,
+	Long:  `Spanny is a CLI tool helping you to manage database schema migration with the Spanner emulator`,
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		loadedConfig, err := conf.LoadConfiguration(env, configPath)
 
@@ -64,11 +62,11 @@ var rootCmd = &cobra.Command{
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		ctx := context.Background()
+		ctx := cmd.Context()
 
 		databasePath := getDatabasePath()
 
-		instance, err := dbops.HasInstance(config.ProjectId, config.InstanceId)
+		instance, err := dbops.HasInstance(ctx, config.ProjectId, config.InstanceId)
 		if err != nil {
 			println(err.Error())
 			return
@@ -79,7 +77,7 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
-		database, err := dbops.HasDatabase(config.InstanceId, config.ProjectId, config.DatabaseId)
+		database, err := dbops.HasDatabase(ctx, config.InstanceId, config.ProjectId, config.DatabaseId)
 		if err != nil {
 			println(err.Error())
 			return

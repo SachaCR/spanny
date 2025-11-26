@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -46,10 +47,13 @@ var createDMLCmd = &cobra.Command{
 }
 
 func createMigrationFiles(fileName string, migrationType MigrationType) {
-	// Get current time
-	currentTime := time.Now()
 
-	migrationName := currentTime.Format("20060102150405123") + "_" + migrationType.String() + "_" + fileName
+	currentTime := time.Now().UTC()
+
+	// Convert the time to Unix timestamp in milliseconds
+	timestamp := currentTime.UnixNano() / int64(time.Millisecond)
+
+	migrationName := strconv.FormatInt(timestamp, 10) + "_" + migrationType.String() + "_" + fileName
 
 	// Create a folder with the timestamp as its name
 	folderName := config.MigrationFilesPath + "/" + migrationName

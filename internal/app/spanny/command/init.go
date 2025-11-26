@@ -18,28 +18,29 @@ var initCmd = &cobra.Command{
 		databaseId := config.DatabaseId
 
 		databasePath := getDatabasePath()
+		ctx := cmd.Context()
 
-		_, err := dbops.CreateInstance(projectId, instanceId)
+		_, err := dbops.CreateInstance(ctx, projectId, instanceId)
 		if err != nil {
 			fmt.Printf("Error creating instance: %s\n", err)
 			return
 		}
 		fmt.Printf("Instance created: %s\n", instanceId)
 
-		_, err = dbops.CreateDatabase(instanceId, projectId, databaseId)
+		_, err = dbops.CreateDatabase(ctx, instanceId, projectId, databaseId)
 		if err != nil {
 			fmt.Printf("Error creating database: %s\n", err)
 			return
 		}
 		fmt.Printf("Database created: %s\n", databaseId)
 
-		err = migration.CreateMigrationTables(databasePath)
+		err = migration.CreateMigrationTables(ctx, databasePath)
 		if err != nil {
 			fmt.Printf("Error creating migration tables: %s\n", err)
 			return
 		}
 
-		err = migration.InsertInitialLockRow(databasePath)
+		err = migration.InsertInitialLockRow(ctx, databasePath)
 		if err != nil {
 			fmt.Printf("Error configuring migration lock: %s\n", err)
 			return

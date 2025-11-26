@@ -10,10 +10,9 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func HasDatabase(instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
+func HasDatabase(ctx context.Context, instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
 	databasePath := fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectId, instanceId, databaseId)
 
-	ctx := context.Background()
 	databaseAdminClient, err := database.NewDatabaseAdminClient(ctx)
 	if err != nil {
 		return nil, err
@@ -46,12 +45,11 @@ func HasDatabase(instanceId string, projectId string, databaseId string) (*datab
 	return database, nil
 }
 
-func CreateDatabase(instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
-	ctx := context.Background()
+func CreateDatabase(ctx context.Context, instanceId string, projectId string, databaseId string) (*databasepb.Database, error) {
 
 	databasePath := fmt.Sprintf("projects/%s/instances/%s/databases/%s", projectId, instanceId, databaseId)
 
-	existingDatabase, err := HasDatabase(instanceId, projectId, databaseId)
+	existingDatabase, err := HasDatabase(ctx, instanceId, projectId, databaseId)
 	if err != nil {
 		return nil, err
 	}
